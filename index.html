@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premio Tigrinho</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="f.ico" type="image/x-icon">
+
+    <!-- Importação de fontes do Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+    <style>
+        /* Seus estilos existentes */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Open Sans', sans-serif;
+            background: #0f0f0f00;
+            position: relative;
+        }
+
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+            filter: blur(30px); /* Inicialmente com desfoque */
+            transition: filter 0.3s ease; /* Transição suave para o desfoque */
+        }
+
+        .video-background video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .top-image {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3; /* Certifique-se de que o z-index é maior que o do GIF */
+            width: 20; /* Ajuste conforme necessário */
+            height: 20; /* Ajuste conforme necessário */
+            max-width: 100%; /* Limita a largura máxima para a tela */
+        }
+
+        /* Estilo para a imagem no topo */
+        .top-image img {
+         width: 200px; /* Ajuste a largura conforme necessário */
+         height: auto; /* Mantém a proporção da altura automaticamente */
+        max-width: 100%; /* Garante que a imagem não exceda a largura da tela */
+        }
+   
+        .top-gif {
+            position: absolute;
+            top: 10%; /* Ajustado para estar abaixo da nova imagem */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            filter: blur(30px); /* Inicialmente com desfoque */
+            transition: filter 0.3s ease; /* Transição suave para o desfoque */
+        }
+
+        .top-gif img {
+            max-width: 150%;
+            height: auto;
+        }
+
+        .content {
+            position: relative;
+            top: 35%; /* Ajustado para não ficar fora da tela */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+            color: white;
+            text-align: center;
+            padding: 200px;
+            filter: blur(30px); /* Inicialmente com desfoque */
+            transition: filter 0.3s ease; /* Transição suave para o desfoque */
+        }
+
+        /* Estilo para o título */
+        .content h1 {
+            font-family: "Gluten", cursive;
+            color: #ffffff;
+            font-size: 2.5em;
+            margin: 0;
+            text-shadow: 3px 3px 15px rgba(255, 255, 0, 0.8);
+            animation: glowText 3s infinite alternate; /* Animação de brilho oscilante */
+        }
+
+        /* Estilo para destacar o número 10 */
+        .highlight {
+            font-family: 'Roboto', sans-serif; /* Fonte diferenciada */
+            color: #fbff00; /* Cor amarela para destaque */
+            font-size: 1.9em; /* Tamanho maior para o número */
+            text-shadow: 4px 4px 20px rgba(255, 0, 0, 0.8); /* Sombra vermelha intensa */
+            animation: pulseHighlight 1.5s infinite alternate; /* Pulso constante no número */
+        }
+
+        /* Animação de brilho oscilante no título */
+        @keyframes glowText {
+            0% {
+                text-shadow: 0 0 10px rgba(255, 255, 0, 0.8), 0 0 20px rgba(255, 255, 0, 0.7), 0 0 30px rgba(255, 255, 0, 0.6);
+            }
+            100% {
+                text-shadow: 0 0 20px rgba(255, 255, 0, 1), 0 0 30px rgba(255, 255, 0, 0.9), 0 0 40px rgba(255, 255, 0, 0.8);
+            }
+        }
+
+        /* Animação de pulso no número 10 */
+        @keyframes pulseHighlight {
+            0% {
+                transform: scale(1);
+                color: rgb(255, 255, 0, 0.8);
+                text-shadow: 0 0 10px rgba(255, 0, 0, 0.6), 0 0 20px rgba(255, 0, 0, 0.4);
+            }
+            100% {
+                transform: scale(1.2);
+                color: #eeff00; /* Alteração sutil na cor para mais impacto */
+                text-shadow: 0 0 20px rgba(255, 0, 0, 1), 0 0 30px rgba(255, 0, 0, 0.8);
+            }
+        }
+
+        /* Estilo para o botão de iniciar o site */
+        #start-site-button {
+            position: absolute;
+            top: 35%;
+            left: 40%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            z-index: 30; /* Certifique-se de que o z-index do botão é maior que o da imagem */
+            animation: bounce 2s infinite; /* Animação de pular */
+        }
+
+        #start-site-button img {
+            width: 300px; /* Ajuste o tamanho do botão */
+            height: auto;
+            border-radius: 12px;
+            border: 4px solid #ffcc0000;
+            transition: transform 0.3s ease, opacity 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Estilo para o botão de música */
+        #music-button {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            cursor: pointer;
+            z-index: 1000; /* Aumente o z-index para garantir que o botão esteja acima de outros elementos */
+            pointer-events: auto; /* Garanta que o botão possa receber eventos de clique */
+        }
+
+        #music-button img {
+            width: 250px; /* Ajuste o tamanho do botão */
+            height: auto;
+            border-radius: 12px;
+            border: 4px solid #ffcc00;
+            transition: transform 0.3s ease, opacity 0.3s ease, box-shadow 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.7);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            }
+        }
+
+        #music-button img:hover {
+            transform: scale(1.1);
+            opacity: 0.8;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Animação de pular no botão de início do site */
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-30px);
+            }
+            60% {
+                transform: translateY(-15px);
+            }
+        }
+
+        /* Assinatura no canto da tela */
+        .signature {
+            position: fixed;
+            bottom: 10px;
+            right: 20px;
+            color: #ffffff;
+            font-size: 14px;
+            font-family: 'Roboto', sans-serif;
+            z-index: 10; /* Certifique-se de que o z-index da assinatura é maior que o do desfoque */
+            opacity: 0.9;
+            text-shadow: 2px 2px 6px rgba(255, 255, 255, 0.8);
+            animation: fadeInSignature 3s ease-out;
+        }
+
+        /* Animação de fade-in na assinatura */
+        @keyframes fadeInSignature {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Estilo para a imagem que aparece brevemente */
+        #brief-image {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 20; /* Certifique-se de que a imagem está abaixo do botão, mas acima de outros elementos */
+            opacity: 0;
+            transition: opacity 1s ease-out; /* Transição suave para o efeito de fade-out */
+            pointer-events: none; /* Garantir que a imagem não interfira com a interação dos botões */
+        }
+
+        /* Animação de fade-in */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Imagem no topo do site -->
+    <div class="top-image">
+        <img src="fortune.png" alt="Imagem do Topo"> <!-- Substitua pelo caminho da sua nova imagem -->
+    </div>
+
+    <!-- Botão de Início do Site -->
+    <div id="start-site-button">
+        <img src="botaoplay.png" alt="Iniciar Site"> <!-- Substitua pelo caminho da sua imagem de botão -->
+    </div>
+
+    <!-- GIF no Topo -->
+    <div class="top-gif">
+        <img src="2024-09-06-PARABENS-.gif" alt="GIF de Exemplo"> <!-- Substitua pelo caminho do seu GIF -->
+    </div>
+
+    <!-- Vídeo de Fundo -->
+    <div class="video-background">
+        <video autoplay muted loop>
+            <source src="trigres.mp4" type="video/mp4">
+            Seu navegador não suporta o formato de vídeo.
+        </video>
+    </div>
+
+    <!-- Música de Fundo -->
+    <audio id="background-music" loop>
+        <source src="tigrinho-musica.ogg" type="audio/ogg">
+        Seu navegador não suporta o formato de áudio.
+    </audio>
+
+    <!-- Conteúdo Visível -->
+    <div class="content">
+        <h1>VOCÊ GANHOU <span class="highlight">10</span> JOGADAS GRÁTIS</h1>
+
+        <!-- Botão de Imagem que Redireciona para Outro Site -->
+        <a href="https://jogodotigre.com/" target="_blank" id="music-button">
+            <img src="cliquetigre.png" alt="Ir para Example Site"> <!-- Atualize o caminho da imagem -->
+        </a>
+    </div>
+
+    <!-- Assinatura no canto inferior direito -->
+    <div class="signature">
+        fortune®️inc. • TIGRINHO
+    </div>
+
+    <!-- Imagem que aparece brevemente -->
+    <img id="brief-image" src="gatogrito.png" alt="Imagem Breve"> <!-- Substitua pelo caminho da sua imagem -->
+
+    <script>
+        // Função para iniciar o site e remover o desfoque
+        document.getElementById('start-site-button').addEventListener('click', function() {
+            document.querySelector('.video-background').style.filter = 'none'; // Remove o desfoque do vídeo
+            document.querySelector('.top-gif').style.filter = 'none'; // Remove o desfoque do GIF
+            document.querySelector('.content').style.filter = 'none'; // Remove o desfoque do conteúdo
+            document.getElementById('background-music').play();
+            
+            // Exibe a imagem com fade-in e oculta com fade-out após 2 segundos
+            const briefImage = document.getElementById('brief-image');
+            briefImage.style.opacity = 1; // Inicia o fade-in
+            setTimeout(() => {
+                briefImage.style.opacity = 0; // Inicia o fade-out após 2 segundos
+            }, 2000); // 2 segundos em milissegundos
+
+            this.style.display = 'none'; // Remove o botão de iniciar
+        });
+
+        // Função para iniciar a música ao clicar no botão centralizado
+        document.getElementById('music-button').addEventListener('click', function() {
+            document.getElementById('background-music').play();
+        });
+    </script>
+</body>
+</html>
